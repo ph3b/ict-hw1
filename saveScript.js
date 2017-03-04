@@ -1,4 +1,4 @@
-const example = require('./examples/medicationexample13.json');
+const example = require('./examples/medicationexample1.json');
 const knex = require('knex')({
     client: 'mysql',
     connection: {
@@ -9,6 +9,10 @@ const knex = require('knex')({
     }
 });
 
+/*
+    Helper functions to normalize or convert the parts of the json
+    structure to database rows for their respective tables.
+ */
 const insertRow = async (tableName, data, transaction) => {
     if (!data) return null;
     const results = await knex
@@ -37,9 +41,8 @@ const getCodeableConceptRow = (codeableConcept = {}) => {
 
 const getCodeableConceptCoding = (codeableConcept, codeableConceptId) => {
     if (codeableConcept.coding) {
-        return codeableConcept.coding.map(({ system, code, display }) => {
-            return { system, code, display, codeableConceptId };
-        })
+        return codeableConcept.coding
+            .map(({ system, code, display }) => ({ system, code, display, codeableConceptId }))
     }
     return null;
 }
@@ -76,7 +79,8 @@ const getContentRow = (content, packageId) => ({
     amount_denominator_code: content.amount.denominator.code,
 })
 
-const insertJson = async (medication) => {
+// 
+const insertMedicationDocument = async (medication) => {
     // Begin transaction
     return knex.transaction(async (trx) => {
         let productId, packageId, codeId;
@@ -127,7 +131,7 @@ const insertJson = async (medication) => {
         }
 
         await insertRow('Medication', getMedicationRow(medication, codeId, productId), trx)
-        console.log('Success');
+        return true;
     })
 }
 
@@ -144,10 +148,13 @@ const insertJson = async (medication) => {
             knex('ProductBatch').del(),
             knex('PackageContent').del()
         ])
-        const results = await insertJson(example);
+        const results = await insertMedicationDocument(example);
+        if (results) {
+            console.log('JSON document inserted');
+        }
     }
     catch (error) {
-        console.log('insertJSON failed')
+        console.log('insertMedicationDocument failed')
         console.log(error);
     }
 })()
