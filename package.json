@@ -1,0 +1,19 @@
+{
+  "name": "heathict1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "saveScript.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Mathias Iden <mathiasiden@me.com>",
+  "license": "MIT",
+  "dependencies": {
+    "knex": "^0.12.7",
+    "mysql": "^2.13.0"
+  }
+}
