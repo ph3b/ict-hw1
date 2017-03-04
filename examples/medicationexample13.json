@@ -56,5 +56,35 @@
         "expirationDate": "2018-12-22"
       }
     ]
+  },
+  "package": {
+    "container": {
+      "coding": [
+        {
+          "system": "http://snomed.info/sct",
+          "code": "385219001",
+          "display": "Injection Solution"
+        }
+      ]
+    },
+    "content": [
+      {
+        "item": {
+          "display": "Some medication name"
+        },
+        "amount": {
+          "numerator": {
+            "value": 100,
+            "system": "http://unitsofmeasure.org",
+            "code": "U"
+          },
+          "denominator": {
+            "value": 1,
+            "system": "http://unitsofmeasure.org",
+            "code": "mL"
+          }
+        }
+      }
+    ]
   }
 }
